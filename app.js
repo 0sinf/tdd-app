@@ -1,5 +1,5 @@
 const express = require("express");
-const productRoutes = require("./routes");
+const productRoutes = require("./routes/products");
 
 const PORT = 3000;
 
