@@ -7,14 +7,19 @@ const newProduct = require("../data/new-product.json");
 ProductModel.create = jest.fn();
 
 describe("Product Controller Create", () => {
+  let req, res, next;
+
+  beforeEach(() => {
+    req = httpMocks.createRequest();
+    res = httpMocks.createResponse();
+    next = null;
+  });
+
   it("should have a createProduct function", () => {
     expect(typeof productController.createProduct).toBe("function");
   });
 
   it("should call Product.create", () => {
-    let req = httpMocks.createRequest();
-    let res = httpMocks.createResponse();
-    let next = null;
     req.body = newProduct;
     productController.createProduct(req, res, next);
     expect(ProductModel.create).toBeCalledWith(newProduct);
