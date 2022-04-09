@@ -34,3 +34,5 @@ expect(mockFunction).toBeCalledTimes(2); // 몇 번 호출되었는지
 1. 함수가 존재하는지 테스트
 2. 함수가 동작할 때 내부에 함수가 동작하는지 테스트 (mock 함수)
 3. 전달되는 Request, Response 객체는 node-mocks-http 를 통해 mocking
+
+mock 함수를 잘 다루는 것이 필요하다. mock 객체, mock 함수.

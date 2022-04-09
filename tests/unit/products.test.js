@@ -28,4 +28,17 @@ describe("Product Controller Create", () => {
     productController.createProduct(req, res, next);
     expect(ProductModel.create).toBeCalledWith(newProduct);
   });
+
+  it("should return 201 response code", () => {
+    productController.createProduct(req, res, next);
+    expect(res.statusCode).toBe(201);
+    expect(res._isEndCalled()).toBeTruthy();
+  });
+
+  it("should return json body in response", () => {
+    // mock 함수에 리턴 값을 임의로 지정해줌
+    ProductModel.create.mockReturnValue(newProduct);
+    productController.createProduct(req, res, next);
+    expect(res._getJSONData()).toStrictEqual(newProduct);
+  });
 });
