@@ -28,3 +28,9 @@ console.log(mockFunction); // 값 리턴
 expect(mockFunction).toBeCalledWith("hello"); // 어떤 인자값으로 호출 되었는지
 expect(mockFunction).toBeCalledTimes(2); // 몇 번 호출되었는지
 ```
+
+## 잠깐 정리
+
+1. 함수가 존재하는지 테스트
+2. 함수가 동작할 때 내부에 함수가 동작하는지 테스트 (mock 함수)
+3. 전달되는 Request, Response 객체는 node-mocks-http 를 통해 mocking
