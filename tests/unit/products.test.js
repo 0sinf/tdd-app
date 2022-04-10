@@ -23,22 +23,22 @@ describe("Product Controller Create", () => {
     expect(typeof productController.createProduct).toBe("function");
   });
 
-  it("should call Product.create", () => {
+  it("should call Product.create", async () => {
     req.body = newProduct;
-    productController.createProduct(req, res, next);
+    await productController.createProduct(req, res, next);
     expect(ProductModel.create).toBeCalledWith(newProduct);
   });
 
-  it("should return 201 response code", () => {
-    productController.createProduct(req, res, next);
+  it("should return 201 response code", async () => {
+    await productController.createProduct(req, res, next);
     expect(res.statusCode).toBe(201);
     expect(res._isEndCalled()).toBeTruthy();
   });
 
-  it("should return json body in response", () => {
+  it("should return json body in response", async () => {
     // mock 함수에 리턴 값을 임의로 지정해줌
     ProductModel.create.mockReturnValue(newProduct);
-    productController.createProduct(req, res, next);
+    await productController.createProduct(req, res, next);
     expect(res._getJSONData()).toStrictEqual(newProduct);
   });
 });
