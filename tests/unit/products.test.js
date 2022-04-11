@@ -23,7 +23,7 @@ describe("Product Controller Read", () => {
 
   it("shoud call Product.find", async () => {
     await productController.getProducts(req, res, next);
-    expect(ProductModel.find).toBeCalled();
+    expect(ProductModel.find).toHaveBeenCalledWith({});
   });
 
   it("should return 200 response code", async () => {
