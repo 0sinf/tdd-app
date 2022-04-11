@@ -24,3 +24,12 @@ test("should return 500 on POST /api/products", async () => {
       "Product validation failed: description: Path `description` is required.",
   });
 });
+
+test("GET /api/products", async () => {
+  const response = await request(app).get("/api/products").send();
+
+  expect(response.statusCode).toEqual(200);
+  expect(Array.isArray(response.body)).toBeTruthy();
+  expect(response.body[0].name).toBeDefined();
+  expect(response.body[0].description).toBeDefined();
+});
