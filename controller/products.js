@@ -8,3 +8,8 @@ exports.createProduct = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getProducts = async (req, res, next) => {
+  const products = await productModel.find();
+  res.status(200).json(products);
+};

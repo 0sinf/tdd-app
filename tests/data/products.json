@@ -1,0 +1,8 @@
+{
+  "products": [
+    { "name": "Gloves", "description": "Good to wear", "price": 15 },
+    { "name": "Hat", "description": "Big hat", "price": 10 },
+    { "name": "Pants", "description": "Denim pants", "price": 25 },
+    { "name": "T-shirts", "description": "Half T-shirts", "price": 30 }
+  ]
+}
