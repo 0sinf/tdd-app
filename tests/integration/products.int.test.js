@@ -47,3 +47,11 @@ test("GET /api/products/:productId", async () => {
   expect(response.body.name).toEqual(firstProduct.name);
   expect(response.body.description).toEqual(firstProduct.description);
 });
+
+test("GET id doesn't exist /api/products/:productId", async () => {
+  const response = await request(app)
+    .get("/api/products/62541c0789e88749544000b9")
+    .send();
+
+  expect(response.statusCode).toEqual(404);
+});
