@@ -38,6 +38,7 @@ test("GET /api/products", async () => {
 });
 
 test("GET /api/products/:productId", async () => {
+  // 동적이면서, 독립적은 테스트는 어떻게 할 수 있을까?
   const response = await request(app)
     .get("/api/products/" + firstProduct._id)
     .send();
