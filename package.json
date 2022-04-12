@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node app.js",
-    "test": "jest"
+    "test": "jest --forceExit"
   },
   "dependencies": {
     "dotenv": "^16.0.0",

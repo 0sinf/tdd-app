@@ -7,6 +7,7 @@ const products = require("../data/products.json");
 // 해당 함수를 mock 함수로
 ProductModel.create = jest.fn();
 ProductModel.find = jest.fn();
+ProductModel.findById = jest.fn();
 
 let req, res, next;
 
@@ -14,6 +15,43 @@ beforeEach(() => {
   req = httpMocks.createRequest();
   res = httpMocks.createResponse();
   next = jest.fn();
+});
+
+describe("Product Controller getProductById", () => {
+  const productId = "shouldMongoDBObjectId";
+
+  it("should have a getProductById function", () => {
+    expect(typeof productController.getProductById).toEqual("function");
+  });
+
+  it("should call Product.findById", async () => {
+    req.params.productId = productId;
+    await productController.getProductById(req, res, next);
+    expect(ProductModel.findById).toBeCalledWith(productId);
+  });
+
+  it("should return json body and response code 200", async () => {
+    ProductModel.findById.mockReturnValue(newProduct);
+    await productController.getProductById(req, res, next);
+    expect(res.statusCode).toEqual(200);
+    expect(res._getJSONData()).toStrictEqual(newProduct);
+    expect(res._isEndCalled()).toBeTruthy();
+  });
+
+  it("should return 404 when item doesn't exist", async () => {
+    ProductModel.findById.mockReturnValue(null);
+    await productController.getProductById(req, res, next);
+    expect(res.statusCode).toEqual(404);
+    expect(res._isEndCalled).toBeTruthy();
+  });
+
+  it("should handle errors", async () => {
+    const errorMessage = { message: "error" };
+    const rejectedPromise = Promise.reject(errorMessage);
+    ProductModel.findById.mockReturnValue(rejectedPromise);
+    await productController.getProductById(req, res, next);
+    expect(next).toBeCalledWith(errorMessage);
+  });
 });
 
 describe("Product Controller Read", () => {
