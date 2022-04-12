@@ -1,7 +1,9 @@
+const req = require("express/lib/request");
 const request = require("supertest");
 const app = require("../../app");
 
 let newProductData = require("../data/new-product.json");
+let firstProduct;
 
 test("POST /api/products", async () => {
   const response = await request(app)
@@ -32,4 +34,15 @@ test("GET /api/products", async () => {
   expect(Array.isArray(response.body)).toBeTruthy();
   expect(response.body[0].name).toBeDefined();
   expect(response.body[0].description).toBeDefined();
+  firstProduct = response.body[0];
+});
+
+test("GET /api/products/:productId", async () => {
+  const response = await request(app)
+    .get("/api/products/" + firstProduct._id)
+    .send();
+
+  expect(response.statusCode).toEqual(200);
+  expect(response.body.name).toEqual(firstProduct.name);
+  expect(response.body.description).toEqual(firstProduct.description);
 });
