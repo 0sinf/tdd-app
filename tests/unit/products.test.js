@@ -8,8 +8,14 @@ const products = require("../data/products.json");
 ProductModel.create = jest.fn();
 ProductModel.find = jest.fn();
 ProductModel.findById = jest.fn();
+ProductModel.findByIdAndUpdate = jest.fn();
 
 let req, res, next;
+const productId = "shouldMongoDBObjectId";
+const updatedProduct = {
+  name: "updated name",
+  description: "updated description",
+};
 
 beforeEach(() => {
   req = httpMocks.createRequest();
@@ -17,9 +23,51 @@ beforeEach(() => {
   next = jest.fn();
 });
 
-describe("Product Controller getProductById", () => {
-  const productId = "shouldMongoDBObjectId";
+describe("Product Controller Update", () => {
+  it("should have an updateProduct function", () => {
+    expect(typeof productController.updateProduct).toEqual("function");
+  });
 
+  it("should call Product.findByIdAndUpdate", async () => {
+    req.params.productId = productId;
+    req.body = updatedProduct;
+
+    await productController.updateProduct(req, res, next);
+    expect(ProductModel.findByIdAndUpdate).toHaveBeenCalledWith(
+      productId,
+      updatedProduct,
+      { new: true }
+    );
+  });
+
+  it("should return json body and response code 200", async () => {
+    req.params.productId = productId;
+    req.body = updatedProduct;
+
+    ProductModel.findByIdAndUpdate.mockReturnValue(updatedProduct);
+    await productController.updateProduct(req, res, next);
+    expect(res.statusCode).toEqual(200);
+    expect(res._getJSONData()).toStrictEqual(updatedProduct);
+    expect(res._isEndCalled()).toBeTruthy();
+  });
+
+  it("should return 404 when item doesn't exist", async () => {
+    ProductModel.findByIdAndUpdate.mockReturnValue(null);
+    await productController.updateProduct(req, res, next);
+    expect(res.statusCode).toEqual(404);
+    expect(res._isEndCalled()).toBeTruthy();
+  });
+
+  it("should handle errors", async () => {
+    const errorMessage = { message: "error" };
+    const rejectedPromise = Promise.reject(errorMessage);
+    ProductModel.findByIdAndUpdate.mockReturnValue(rejectedPromise);
+    await productController.updateProduct(req, res, next);
+    expect(next).toBeCalledWith(errorMessage);
+  });
+});
+
+describe("Product Controller getProductById", () => {
   it("should have a getProductById function", () => {
     expect(typeof productController.getProductById).toEqual("function");
   });
